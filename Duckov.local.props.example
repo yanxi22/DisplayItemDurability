@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <!-- Windows: directory containing Duckov.exe. Replace this example path. -->
+    <DuckovPath>D:/Games/Steam/steamapps/common/Escape from Duckov</DuckovPath>
+
+    <!-- macOS: use the parent directory containing Duckov.app. -->
+    <!-- <DuckovPath>/path/to/Escape from Duckov</DuckovPath> -->
+
+    <!-- Optional: override automatic discovery with the exact Managed directory. -->
+    <!-- <DuckovManagedPath>/path/to/Managed</DuckovManagedPath> -->
+  </PropertyGroup>
+</Project>

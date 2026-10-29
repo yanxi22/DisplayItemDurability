@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DuckovPath Condition="'$(DuckovPath)' == ''">$(DUCKOV_PATH)</DuckovPath>
+  </PropertyGroup>
+
+  <!-- Copy the example to this ignored file to keep machine-specific paths local. -->
+  <Import Project="Duckov.local.props" Condition="Exists('Duckov.local.props')" />
+
+  <PropertyGroup>
+    <DuckovManagedPath Condition="'$(DuckovManagedPath)' == '' and '$(DuckovPath)' != ''">$(DuckovPath)/Duckov_Data/Managed</DuckovManagedPath>
+    <DuckovManagedPath Condition="'$(DuckovManagedPath)' == '$(DuckovPath)/Duckov_Data/Managed' and $([MSBuild]::IsOSPlatform('OSX'))">$(DuckovPath)/Duckov.app/Contents/Resources/Data/Managed</DuckovManagedPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="src/**/*.cs" />
+    <!-- Game assemblies are compile-time references, not redistributable mod files. -->
+    <Reference Include="$(DuckovManagedPath)/TeamSoda.*.dll" Private="false" />
+    <Reference Include="$(DuckovManagedPath)/ItemStatsSystem.dll" Private="false" />
+    <Reference Include="$(DuckovManagedPath)/Assembly-CSharp.dll" Private="false" />
+    <Reference Include="$(DuckovManagedPath)/Unity*.dll" Private="false" />
+  </ItemGroup>
+
+  <Target Name="ValidateDuckovReferences" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="'$(DuckovManagedPath)' == ''"
+           Text="Set DuckovPath using -p:DuckovPath=..., DUCKOV_PATH, or Duckov.local.props. See README.md." />
+    <Error Condition="!Exists('$(DuckovManagedPath)/Assembly-CSharp.dll') or !Exists('$(DuckovManagedPath)/ItemStatsSystem.dll') or !Exists('$(DuckovManagedPath)/TeamSoda.Duckov.Core.dll') or !Exists('$(DuckovManagedPath)/Unity.TextMeshPro.dll')"
+           Text="Required Duckov/Unity assemblies were not found in '$(DuckovManagedPath)'. Check your game installation or set DuckovManagedPath explicitly. See docs/DEVELOPMENT.md." />
+  </Target>
+</Project>

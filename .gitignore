@@ -1,0 +1,37 @@
+# Build and release output
+**/bin/
+**/obj/
+/artifacts/
+*.dll
+*.exe
+*.pdb
+*.zip
+
+# Local configuration and deployment state
+/Duckov.local.props
+*.user
+*.suo
+*.log
+DeployState.json
+.env
+.env.*
+
+# Editors and local agent settings
+.vs/
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+*~
+
+# Game references and decompiled development material
+/Documents/
+/references/
+/lib/
+/ReleaseExample/
+
+# Operating systems
+.DS_Store
+Thumbs.db
+Desktop.ini
